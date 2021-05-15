@@ -1,70 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
  
 <head>
-    <title>Python Flask Bucket List App</title>
+    <title>BigM</title>
+
+    <!-- CSS -->
     <link href="../static/style.css" rel="stylesheet">
- 
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
- 
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
- 
- 
+
+    <!-- JS -->
+    <script src="js/jquery-1.11.2.min.js?ver=1.1" type="text/javascript"></script>
+
+    <!-- Iconos -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+
+    <!-- Responsive -->
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
+
 </head>
  
 <body>
- 
-    <div class="container">
-        <div class="header">
-            <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="#">Home</a>
-                    </li>
-                    <li role="presentation"><a href="#">Sign In</a>
-                    </li>
-                    <li role="presentation"><a href="showSignUp">Sign Up</a>
-                    </li>
-                </ul>
-            </nav>
-            <h3 class="text-muted">Python Flask App</h3>
-        </div>
- 
-        <div class="jumbotron">
-            <h1>Bucket List App</h1>
-            <p class="lead"></p>
-            <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Sign up today</a>
-            </p>
-        </div>
- 
-        <div class="row marketing">
-            <div class="col-lg-6">
-                <h4>Bucket List</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            </div>
- 
-            <div class="col-lg-6">
-                <h4>Bucket List</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
- 
-                <h4>Bucket List</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            </div>
-        </div>
- 
-        <footer class="footer">
-            <p>&copy; Company 2015</p>
-        </footer>
- 
+    <!-- <h1 class="h1-titulo" align="center"><span style="color:#908E8E">BIG M </span><span style="color:#7FCBE6"> CALCULATOR</span></h1> -->
+    <div>
+        <h1 class="h1-titulo" align="center">big m CALCULATOR</h1>
+        <h1 class="h1-by" align="center">By Katherine & Andrea</h1>
     </div>
+
+    <div>
+        <form>
+            <label>Tipo de Problema:</label><br>
+
+            
+            <input type="checkbox" id="min" name="min" value="min">
+            <label for="min">Min</label>
+            
+            <input type="checkbox" id="max" name="max" value="max">
+            <label for="max">Max</label><br>
+
+            <label for="CantRest">Cantidad de restricciones:</label><br>
+            <input type="text" id="CantRest" name="CantRest"><br>
+
+            <label for="CantVars">Cantidad de variables:</label><br>
+            <input type="text" id="CantVars" name="CantVars">
+          </form>
+    </div>
+
 </body>
  
 </html>
