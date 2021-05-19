@@ -1,8 +1,9 @@
 body{
-    background-color: whitesmoke;
+    background-color: #22252d;
     
 }
 
+/* ENCABEZADO */
 .h1-titulo{
     /* font-family: Impact;
     font-size: 80px; */
@@ -25,7 +26,7 @@ body{
     1px 22px 10px rgba(16,16,16,0.2),
     1px 25px 35px rgba(16,16,16,0.2),
     1px 30px 60px rgba(16,16,16,0.4);
-    margin-top: 1%;
+    margin-top: 3%;
     margin-bottom: 1%;
 }
 
@@ -34,4 +35,172 @@ body{
     font-weight: 100;
     font-size: 20px;
     color: #AAAAAA;
+    margin-bottom: -3%;
+}
+
+/* FORM / INPUTS */
+.div-form1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    padding: 3% 3% 3% 3%;
+    background: linear-gradient(90deg, rgba(40,45,55,0.861782212885154) 100%, rgba(0,212,255,1) 100%);
+    border-radius: 15px;
+    margin-top: 10%;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+    margin: 100px auto;
+}
+
+.label-instruction{
+    font-family: Roboto;
+    font-weight: 400;
+    font-size: 25px;
+    color: #DCD5EC;
+    margin-right: 2%;
+}
+
+.check-option{
+    font-family: Arial;
+    font-size: 20px;
+    color: white;
+    display: inline-block;
+}
+.container {
+    color: #b1b1b1;
+    font-family: Arial, Helvetica, sans-serif;
+    display: block;
+    position: relative;
+    padding-left: 40px;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: -10px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Hide the browser's default radio button */
+  .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  /* Create a custom radio button */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    outline: none;
+    border-style: inset; 
+    border-color: #4f5052;
+    border-width: 1px;
+    background: linear-gradient(90deg, rgba(31, 35, 43, 0.801) 100%, rgba(0,212,255,1) 100%);
+    border-radius: 50%;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+  
+  /* When the radio button is checked, add a blue background */
+  .container input:checked ~ .checkmark {
+    outline: none;
+    border-style: inset; 
+    border-color: #4f5052;
+    border-width: 1px;
+    background: linear-gradient(90deg, rgba(31, 35, 43, 0.801) 100%, rgba(0,212,255,1) 100%);
+    border-radius: 50%;
+  }
+  
+  /* Create the indicator (the dot/circle - hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the indicator (dot/circle) when checked */
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the indicator (dot/circle) */
+  .container .checkmark:after {
+       top: 6px;
+      left: 6.5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #b1b1b1;
+  }
+
+.input-resp1{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    color: white;
+    outline: none;
+    border-style: inset; 
+    border-color: #4f5052;
+    border-width: 1px;
+    padding: 3px;
+    width: 7%;
+    background: linear-gradient(90deg, rgba(31, 35, 43, 0.801) 100%, rgba(0,212,255,1) 100%);
+    border-radius: 3px;
+    transition: all 0.4s ease;
+    text-align: center;
+    margin-left: 3%;
+}
+
+/* SUBMIT */
+.button-submit{
+    font-family: Helvetica;
+    font-size: 18px;
+    color: white;
+    width: 20%;
+    padding: 1%;
+    background-color: #22252d;  
+    text-shadow: #DCD5EC 1px 0 8px; 
+    float: right;
+}
+
+.button-submit:hover {
+    border-style: inset; 
+    border-color: #4f5052;
+    border-width: 1px;
+    text-shadow: none;
+    color: #b1b1b1;
+}
+
+.button-submit:after {
+    border-style: inset; 
+    border-color: #4f5052;
+    border-width: 1px;
+    outline: #DCD5EC;
+    text-shadow: #DCD5EC 1px 0 10px;
+}
+
+.input-fo{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    color: white;
+    outline: none;
+    border-style: inset; 
+    border-color: #4f5052;
+    border-width: 1px;
+    padding: 3px;
+    width: 7%;
+    background: linear-gradient(90deg, rgba(31, 35, 43, 0.801) 100%, rgba(0,212,255,1) 100%);
+    border-radius: 3px;
+    transition: all 0.4s ease;
+    text-align: center;
+    margin-left: -1%;
 }

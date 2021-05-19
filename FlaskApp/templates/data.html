@@ -28,34 +28,36 @@
         <h1 class="h1-by" align="center">By Katherine & Andrea</h1>
     </div>
 
+    
     <div class="div-form1">
-        <form action = "http://localhost:5000/data" method = "post">
-            <label class="label-instruction" align="left" style="margin-bottom: 3%;">Problem Type:</label>
-            <label class="input-resp1" align="left" style="margin-bottom: 3%;">MAX</label><br><br>
+        
+        <form action = "http://localhost:5000/resultado" method = "post">
+            <label class="label-instruction" align="left" style="margin-bottom: 3%; color: #b1b1b1">SUBJECT TO:</label><br><br>
+
             
-            <!-- INPUT RESTRICCIONES -->
-            <label for="CantRest" class="label-instruction">Numbers of Restrictions:</label>
-            <input type="text" id="cantRest" name="cantRest" class="input-resp1" autocomplete="off"><br>
-            <br><br>
-
-            <label class="label-instruction" align="left" style="margin-bottom: 3%; color: #b1b1b1">OBJECTIVE FUNCTION:</label><br><br>
-
-            <!-- INPUT VARS FO -->
-            <label class="label-instruction" style="margin-left: 2%;"> z = </label>
             <!-- x1 -->
-            <input type="text" id="foX" name="foX" class="input-fo" autocomplete="off">
+            <input type="text" id="xVals" name="xVals" class="input-fo" style="margin-left: 2%; width: 4%;" autocomplete="off">
             <!-- x1 -->
             <label class="label-instruction"> x1</label>
-            <label class="label-instruction"> +</label>
+            <label class="label-instruction" style="margin-left: -4px;"> +</label>
             <!-- x2 -->
-            <input type="text" id="foY" name="foY" class="input-fo" style="margin-left: 1px;" autocomplete="off">
+            <input type="text" id="yVals" name="yVals" class="input-fo" style="margin-left: -3px; width: 4%;" autocomplete="off">
             <!-- x2 -->
             <label class="label-instruction"> x2</label>
 
-            <br><br><br><br>
-            <button type="submit" class="button-submit">NEXT</button>
+            <!-- desigualdad -->
+            <input type="text" id="desigualdad" name="desigualdad" class="input-fo" style="margin-left: 1%; margin-right: 4%; width: 3.5%;" autocomplete="off">
+
+            <!-- resultado -->
+            <input type="text" id="results" name="results" class="input-fo" style="margin-left: 1px;" autocomplete="off">
+            <br><br>
             
+
+            <!-- RESOLVER -->
+            <br><br><br><br>
+            <button type="submit" class="button-submit" style="width: 12%;">SOLVE</button>
           </form>
+        
     </div>
 
 </body>
