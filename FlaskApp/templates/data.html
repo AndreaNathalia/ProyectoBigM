@@ -30,11 +30,10 @@
 
     
     <div class="div-form1">
-        
+        <label class="label-instruction" align="left" style="margin-bottom: 3%; color: #b1b1b1">SUBJECT TO:</label><br><br>
+        {% if Restricciones is defined and Restricciones|length > 0 %}
         <form action = "http://localhost:5000/resultado" method = "post">
-            <label class="label-instruction" align="left" style="margin-bottom: 3%; color: #b1b1b1">SUBJECT TO:</label><br><br>
-
-            
+        {% for i in Restricciones %}
             <!-- x1 -->
             <input type="text" id="xVals" name="xVals" class="input-fo" style="margin-left: 2%; width: 4%;" autocomplete="off">
             <!-- x1 -->
@@ -51,12 +50,13 @@
             <!-- resultado -->
             <input type="text" id="results" name="results" class="input-fo" style="margin-left: 1px;" autocomplete="off">
             <br><br>
-            
+            {% endfor %}
 
             <!-- RESOLVER -->
             <br><br><br><br>
             <button type="submit" class="button-submit" style="width: 12%;">SOLVE</button>
           </form>
+          {% endif %}
         
     </div>
 
