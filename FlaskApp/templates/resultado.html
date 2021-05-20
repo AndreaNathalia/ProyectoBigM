@@ -33,24 +33,22 @@
         
         <form action = "http://localhost:5000/resultado" method = "post">
             <label class="label-instruction" align="left" style="margin-bottom: 3%; color: #b1b1b1">RESULTADO:</label><br><br>
-
             
-            <label class="label-instruction" align="left" style="margin-bottom: 3%;">Primal Matrix: </label>
-            <label class="input-resp1" align="left" style="margin-bottom: 3%;">{{ matrix }}</label><br><br>
-
-            <label class="label-instruction" align="left" style="margin-bottom: 3%;">Dual Matrix: </label>
-            <label class="input-resp1" align="left" style="margin-bottom: 3%;">{{ matrixD }}</label><br><br>
+            <label class="label-instruction" align="left" style="margin-bottom: 3%;">Solución Óptima: </label>
+            <label class="input-resp1" align="left" style="margin-bottom: 3%;">{{ resultadosP }}</label><br><br>
 
             <label class="label-instruction" align="left" style="margin-bottom: 3%;">x1: </label>
             <label class="input-resp1" align="left" style="margin-bottom: 3%;">{{ xVals }}</label><br><br>
 
             <label class="label-instruction" align="left" style="margin-bottom: 3%;">x2: </label>
-            <label class="input-resp1" align="left" style="margin-bottom: 3%;">{{ yVals }}</label><br><br>
-
-            <label class="label-instruction" align="left" style="margin-bottom: 3%;">Solución Óptima: </label>
-            <label class="input-resp1" align="left" style="margin-bottom: 3%;">{{ resultadosP }}</label><br><br>
+            <label class="input-resp1" align="left" style="margin-bottom: 3%;">{{ yVals }}</label><br><br><br><br>
             
+            <label class="label-instruction" align="left" style="margin-bottom: 3%;">Primal Matrix: </label><br><br>
+            <label class="input-resp1" align="left" style="margin-bottom: 3%;">{{ matrix }}</label><br><br>
 
+            <label class="label-instruction" align="left" style="margin-bottom: 3%;">Dual Matrix: </label><br><br>
+            <label class="input-resp1" align="left" style="margin-bottom: 3%;">{{ matrixD }}</label><br><br>
+            
           </form>
         
     </div>

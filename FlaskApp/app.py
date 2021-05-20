@@ -31,7 +31,7 @@ def inputFO(foX, foY, RestHtml):
 
 
 def createMatrix(xVals, yVals, desigualdad, results):
-  matrix = np.zeros([int(cantRest)+1, int(cantVars)+2], dtype = float )
+  matrix = np.zeros([cantRest+1, cantVars+2], dtype = float )
   desigual = []
 
   matrix[0][0] = 1 # rep de Z
@@ -39,13 +39,13 @@ def createMatrix(xVals, yVals, desigualdad, results):
   for i in range(1,cantVars+1): #FO to matrix
     matrix[0][i] = objFunc[i-1]
 
-  for i in range(1, int(cantRest)+1): # no fila 0
+  for i in range(1, cantRest+1): # no fila 0
     matrix[i][1] = xVals[i-1] # var 1
     matrix[i][2] = yVals[i-1] # var 2
     matrix[i][3] = results[i-1] # results
     desigual.append(desigualdad[i-1])
   
-  return matrix, desigual
+  return matrix, desigualdad
 
 # TRANSPUESTA
 def transpuesta():
@@ -68,15 +68,16 @@ def transpuesta():
   for i in desigual:
     if i != '=':
       slackVarsP += 1
-  
+
   matTranspose = matrixP.copy()
-  matTranspose = np.delete(matTranspose, [0,1], 1)
+  matTranspose = np.delete(matTranspose, 0, 1)
 
   dType = "min"
   if pType == "min":
     dType = "max"
 
   normal = 1 # 1 si es normal, 0 no es normal
+
   if pType == "max":
     for i in desigual:
       if i != '<=': # si hay uno diferente ya no es normal
@@ -92,6 +93,7 @@ def transpuesta():
   
   # Si es normal
   if normal == 1:
+
     if dType == "max":
       for i in range(cantVarsP):
         desigualD.append('<=')
@@ -101,6 +103,7 @@ def transpuesta():
   
   # No es normal
   elif normal == 0:
+
     if pType == "max":
       for i in range(len(desigual)):
         if desigual[i] == ">=":
@@ -143,21 +146,31 @@ def transpuesta():
   matTranspose = np.roll(matTranspose, 1, 0)
 
   matTranspose = np.insert(matTranspose, 0,0,1)
-  matTranspose[0][1] = 1
+  matTranspose[0][0] = 1
 
   for i in range(len(matTranspose)): 
     matTranspose[i][-1] *= -1 #vector de resultados
   
   for i in range(1,len(matTranspose[0])-1): #ignora z y results
     matTranspose[0][i] *= -1 #FO *-1
-  
+
   cantVarsD = cantRestP
   cantRestD = cantVarsP
-  
+
+  # print("Primal Matrix")
+  # print(matrixP.round())
+  # print(desigual)
+  # print(ursVars)
+  # print("Dual Matrix")
+  # print(matTranspose)
+  # print(desigualD)
+  # print(ursDual)
+
   slackDual = 0
   for i in desigualD:
     if i != '=':
       slackDual = slackDual + 1
+  print(slackDual)
 
 # BIG M
 def bigM(matrix, slackVars, cantVars, cantRest, mType, desigualdad, urs):
@@ -169,12 +182,10 @@ def bigM(matrix, slackVars, cantVars, cantRest, mType, desigualdad, urs):
         desigualdad[i-1] = '>='
       elif desigualdad[i-1] == '>=': # i-1 para que empieze de 0
         desigualdad[i-1] = '<='
-
+  
   for i in range(slackVars):
     matrix = np.insert(matrix,1+cantVars, 0, 1)
-
-  print(matrix)
- 
+  
   # ---------------- DECLARAMOS M
   m = 10**10
   if mType == 'max':
@@ -190,29 +201,27 @@ def bigM(matrix, slackVars, cantVars, cantRest, mType, desigualdad, urs):
   for i in range(1, len(matrix)):
     if desigualdad[i-1] == '<=':
       matrix[i][columna + accion -1] = 1
-    
+
     elif desigualdad[i-1] == '>=':
       matrix[i][columna + accion -1] = -1
 
       matrix = np.insert(matrix, len(matrix[0])-1, 0, 1) # creamos var artif
-      matrix[i][len(matrix[0])-1] = 1
-      matrix[0][len(matrix[0])-1] = m
+      matrix[i][len(matrix[0])-2] = 1
+      matrix[0][len(matrix[0])-2] = m
 
       artifIndex.append(i)
       artifQ += 1
     
     elif desigualdad[i-1] == '=':
       matrix = np.insert(matrix, len(matrix[0])-1, 0, 1) # creamos var artif
-      matrix[i][len(matrix[0])-1] = 1
-      matrix[0][len(matrix[0])-1] = m
+      matrix[i][len(matrix[0])-2] = 1
+      matrix[0][len(matrix[0])-2] = m
 
       artifIndex.append(i)
       artifQ += 1
       accion -= 1
     accion += 1
   
-  print(matrix)
-
   for i in range(len(urs)):
     if urs[i] == 1:
       matrix = np.insert(matrix, len(matrix[0])-1, 0,1)
@@ -227,10 +236,10 @@ def bigM(matrix, slackVars, cantVars, cantRest, mType, desigualdad, urs):
   return matrix, mType, cantVars
 
 # SIMPLEX
-def getPivot():
+def getPivot():  
   if mType == 'min':
     indexCP = np.argmax(matrix[0][1:]) + 1
-  if pType == "max":
+  if mType == "max":
     indexCP = np.argmin(matrix[0][1:]) + 1
 
   divi = float('inf')
@@ -245,21 +254,16 @@ def getPivot():
 
   return indexCP, indexFP, valorPivote
 
-
 def simplex():
   matResults = matrix.copy()
   for i in range(1, len(matrix[indexFP])):
     matrix[indexFP][i] = matResults[indexFP][i] / valorPivote
   
+  # OPERACIONES ENTE RENGLONES
   for i in range(len(matrix)):
-    column = 1
     if i != indexFP:
       for j in range(len(matrix[0])):
-        matrix[i][j] = matResults[i][j] - (matResults[i][indexFP] * matrix[indexCP][j])
-  
-  # table = pd.DataFrame(matrix, columns = columsns)
-  # print(table.round(3).to_string(index = False), '\n')
-
+        matrix[i][j] = matResults[i][j] - (matResults[i][indexCP] * matrix[indexFP][j])
 
 def continueSimplex():
   continueS = False
@@ -271,7 +275,7 @@ def continueSimplex():
     for i in matrix[0][1:len(matrix[0])-1]:
       if i < 0:
         continueS = True
-
+  
   return continueS
 
 # PARA ENTEROS
@@ -285,6 +289,7 @@ def maxValues():
   
   vlasX=[]
   vlasY=[]
+
   for i in range(len(valores)):
     if i % 2 == 0:
       vlasX .append(int(valores[i]))
@@ -313,10 +318,9 @@ def maxValues():
 
 def puntos():
   pts = []
-  for i in range(round(xVals)+1): # valores x 
-    for j in range(round(yVals)+1): # valores y
+  for i in range(0, int(round(xVals)+1)): # valores x 
+    for j in range(0, int(round(yVals)+1)): # valores y
       pts.append((i,j)) # append (x,y)
-      
   return pts
 
 def ptsReales():
@@ -324,19 +328,21 @@ def ptsReales():
 
   for i in range(len(pts)):
     cant = 0
-    for j in range(len(matRest[1:])):
-      cant = pts[i][0] * matRest[j+1][2] + pts[i][1] * matRest[j+1][3]
+    for j in range(1,len(matRest)): #filas sin FO
+      varX1 = pts[i][0] * matRest[j][1] 
+      varX2 = pts[i][1] * matRest[j][2]
+      cant = varX1 + varX2
 
-      if desigualdad[j] == "<=":
-        if cant > matRest[j+1][-1]:
+      if desigualdad[j-1] == "<=":
+        if cant > matRest[j][-1]:
           punts[i] = 0      
       
-      if desigualdad[j] == ">=":
-        if cant < matRest[j+1][-1]:
+      if desigualdad[j-1] == ">=":
+        if cant < matRest[j][-1]:
           punts[i] = 0
 
   p = []
-  for i in pts:
+  for i in punts:
     try:
       int(i)
     except:
@@ -356,19 +362,21 @@ def maximizacion(valores):
       pI = punts[i]
   
   answer = str(valor)
-  return answer
+  xy = pI
+  print("---------- answer   ")
+  print(answer)
+  return answer, xy
 
 def resultados(punts):
   resu = []
   for i in range(len(punts)):
-    resuX = punts[i][0] * (matRest[0][2] *-1)
-    resuY = punts[i][1] * (matRest[0][3] *-1)
+    resuX = punts[i][0] * (matRest[0][1] *-1)
+    resuY = punts[i][1] * (matRest[0][2] *-1)
     cantT = resuX + resuY
     resu.append(cantT)
 
-  puntOpt = maximizacion(resu)
-  return puntOpt
-
+  puntOpt, xy = maximizacion(resu)
+  return puntOpt, xy
 
 
 
@@ -379,108 +387,108 @@ app = Flask(__name__)
 # renderizar a index (input de FO)
 @app.route('/')
 def index():
-    return render_template('index.html', Restricciones = [])
+  return render_template('index.html', Restricciones = [])
 
 # renderizar a data (input de coeficientes de las restricciones)
 @app.route('/data', methods=['POST'])
 def data():
-    foX = request.form['foX']
-    foY = request.form['foY']
-    RestHtml = request.form['cantRest']
+  foX = request.form['foX']
+  foY = request.form['foY']
+  RestHtml = request.form['cantRest']
 
-    global cantVars, objFunc, pType, cantRest, ursVars
-    
-    cantVars, objFunc, pType, cantRest, ursVars = inputFO(foX, foY, RestHtml)
-    print(foX, foY)
+  global cantVars, objFunc, pType, cantRest, ursVars
+  
+  cantVars, objFunc, pType, cantRest, ursVars = inputFO(foX, foY, RestHtml)
+  print(foX, foY)
 
-    Restricciones = [1]*int(cantRest)
-    return render_template('data.html', Restricciones = Restricciones)
+  Restricciones = [1]*int(cantRest)
+  return render_template('data.html', Restricciones = Restricciones)
 
 
 # renderizar a resultado
 @app.route('/resultado', methods=['POST'])
 def resultado():
-    xValsHtml = request.form.getlist('xVals')
-    yValsHtml = request.form.getlist('yVals')
-    
-    desigualdadHtml = request.form.getlist('desigualdad')
-    results = request.form.getlist('results')
+  xValsHtml = request.form.getlist('xVals')
+  yValsHtml = request.form.getlist('yVals')
+  
+  desigualdadHtml = request.form.getlist('desigualdad')
+  results = request.form.getlist('results')
 
-    global matrixP
-    global desigual
+  global matrixP
+  global desigual
 
-    matrixP, desigual = createMatrix(xValsHtml, yValsHtml, desigualdadHtml, results)
-    transpuesta()
-    
-    global matRest, desigualdad, matrix, columsns, mType, cantVars, valorPivote, indexFP, indexCP, matrixD, columsnsD, mTypeD, cantVarsD, valorPivoteD, indexFOD, indexCPD
-    matRest = matrixP
-    desigualdad = desigual
+  matrixP, desigual = createMatrix(xValsHtml, yValsHtml, desigualdadHtml, results)
+  transpuesta()
+  
+  global matRest, desigualdad, matrix, mType, cantVars, valorPivote, indexFP, indexCP, matrixD, mTypeD, cantVarsD, valorPivoteD, indexFOD, indexCPD
+  matRest = matrixP
+  desigualdad = desigual
 
-    matrix, mType, cantVars = bigM(matrixP, slackVarsP, cantVarsP, cantRestP, pType, desigual, ursVars)
-    continueSimp = continueSimplex()
-    
-    while continueSimp == True:
-        indexCP, indexFP, valorPivote = getPivot()
+  matrix, mType, cantVars = bigM(matrixP, slackVarsP, cantVarsP, cantRestP, pType, desigual, ursVars)
+  continueSimp = continueSimplex()
+  
+  while continueSimp == True:
+    indexCP, indexFP, valorPivote = getPivot()
 
-        simplex()
-        continueSimp = continueSimplex()
-
-    
-    print("\nOptimal Solution Primal: ", matrix[0][-1], "\n\n\n\n\n\n") # ---------------------- BORRAR ----------------------
-
-    matrixD, mTypeD, cantVarsD = bigM(matTranspose, slackDual, cantVarsD, cantRestD, dType, desigualD, ursDual)
+    simplex()
     continueSimp = continueSimplex()
 
-    while continueSimp == True:
-        valorPivoteD, indexFOD, indexCPD = getPivot()
+  
+  print("\nSOLUCION PRIMAL: ", matrix[0][-1], "\n") # ---------------------- BORRAR ----------------------
 
-        simplex()
-        continueSimp = continueSimplex()
+  matrixD, mTypeD, cantVarsD = bigM(matTranspose, slackDual, cantVarsD, cantRestD, dType, desigualD, ursDual)
+  continueSimp = continueSimplex()
 
-    print("\nOptimal Solution Dual: ", matrix[0][-1]) # ---------------------- BORRAR ----------------------
+  while continueSimp == True:
+    valorPivoteD, indexFOD, indexCPD = getPivot()
 
-    global xVals, yVals, pts, punts
+    simplex()
+    continueSimp = continueSimplex()
 
-    xVals, yVals = maxValues()
-    pts = puntos()
-    punts = ptsReales()
-    resultadosP = resultados(punts)
+  print("\nSOLUCION DUAL: ", matrix[0][-1]) # ---------------------- BORRAR ----------------------
 
-    print("\nresultss: ") #--------------- BORRAR ----------------------------
-    print(resultadosP)
-    
-    return render_template('resultado.html',
-        cantVarsP = cantVarsP,
-        cantRestP = cantRestP,
-        pType = pType,
-        desigual = desigual,
-        matrixP = matrixP,
+  global xVals, yVals, pts, punts
 
-        cantVarsD = cantVarsD,
-        cantRestD = cantRestD,
-        dType = dType,
-        desigualD = desigualD,
-        matTranspose = matTranspose,
+  xVals, yVals = maxValues()
+  pts = puntos()
+  punts = ptsReales()
+  resultadosP, xy = resultados(punts)
 
-        matrix = matrix,
-        matrixD = matrixD,
-        sol = matrix[0][-1],
+  print("\nresultss: ") #--------------- BORRAR ----------------------------
+  print(resultadosP)
+  
+  return render_template('resultado.html',
+    cantVarsP = cantVarsP,
+    cantRestP = cantRestP,
+    pType = pType,
+    desigual = desigual,
+    matrixP = matrixP,
 
-        xVals = xVals,
-        yVals = yVals,
-        resultadosP = resultadosP
-    )
+    cantVarsD = cantVarsD,
+    cantRestD = cantRestD,
+    dType = dType,
+    desigualD = desigualD,
+    matTranspose = matTranspose,
+
+    matrix = matrix,
+    matrixD = matrixD,
+    sol = matrix[0][-1],
+
+    xVals = xy[0],
+    yVals = xy[1],
+    resultadosP = resultadosP
+  )
 
 
 ##---- RUTAS PARA VER LAS PÁGINAS
 @app.route('/data')
 def test():
-    return render_template('data.html')
+  return render_template('data.html')
 
 @app.route('/resultado')
 def testR():
-    return render_template('resultado.html')
+  return render_template('resultado.html')
 
  
 if __name__ == "__main__":
-    app.run()
+  app.run()
