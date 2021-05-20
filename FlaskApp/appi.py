@@ -76,8 +76,13 @@ def resultado():
   global desigualdad, mType, valorPivote, indexFP, indexCP
   global mTypeD, cantVarsD, valorPivoteD, indexFOD, indexCPD
 
+  print("Antes de create matrix")
+
   matrixP, desigual = inp.createMatrix(xValsHtml, yValsHtml, desigualdadHtml, results, cantVars, objFunc, cantRest)
+  print("medio")
   slackVarsP, cantVarsP, cantRestP, matTranspose, slackDual, cantVarsD, cantRestD, dType, desigualD, ursDual = tp.transpuesta(matrixP, desigual, pType, ursVars)
+  
+  print("despues de create matrix")
 
   matRest = matrixP
   desigualdad = desigual
@@ -85,6 +90,8 @@ def resultado():
   matrixP, mType, cantVars, desigual = bM.bigM(matrixP, slackVarsP, cantVarsP, cantRestP, pType, desigual, ursVars)
   continueSimp = sp.continueSimplex(mType, matrixP)
   
+  print("antes de simplex primal")
+
   while continueSimp == True:
     indexCP, indexFP, valorPivote = sp.getPivot(mType, matrixP)
 
@@ -94,14 +101,21 @@ def resultado():
   print("\nSOLUCION PRIMAL: ", matrixP[0][-1], "\n") 
 
   matrixD, mTypeD, cantVarsD, desigualD = bM.bigM(matTranspose, slackDual, cantVarsD, cantRestD, dType, desigualD, ursDual)
+  
   continueSimp = sp.continueSimplex(mTypeD, matrixD)
 
-
+  print("antes de simplex dual")
+  print(continueSimp)
   while continueSimp == True:
-    indexCPD, indexFOD, valorPivoteD   = sp.getPivot(mTypeD, matrixD)
+    indexCPD, indexFOD, valorPivoteD = sp.getPivot(mTypeD, matrixD)
 
+    print("\nindexCPD, indexFOD, valorPivoteD")
+    print(indexCPD, indexFOD, valorPivoteD)
+    
     matrixD = sp.simplex(matrixD, indexFOD, valorPivoteD, indexCPD)
+    print("m", mTypeD)
     continueSimp = sp.continueSimplex(mTypeD, matrixD)
+    print(continueSimp)
 
   print("\nSOLUCION DUAL: ", matrixD[0][-1]) 
 
